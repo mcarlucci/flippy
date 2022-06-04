@@ -24,6 +24,7 @@ function App() {
               // and other props, which will go to div
               style={{
                 color: 'white',
+                cursor: 'pointer',
                 margin: '0 10px 10px 0',
                 height: '200px', 
                 width: '200px', 
