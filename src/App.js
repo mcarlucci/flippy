@@ -2,33 +2,43 @@ import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import './App.css';
 import questions from './data/questions.json';
 
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex !== 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 function App() {
-  const chunkSize = 25;
-  const chunks = questions.map((e, i) => {
-    return i % chunkSize === 0 ? questions.slice(i, i + chunkSize) : null;
+  const numOfCards = 25;
+  const shuffledCards = shuffle(questions);
+
+  const cards = shuffledCards.map((e, i) => {
+    return i % numOfCards === 0 ? shuffledCards.slice(i, i + numOfCards) : null;
   }).filter(e => e);
-  console.log(chunks)
 
   return (
     <div className="App">
       <h1>Flippy</h1>
       <div className="cards-container">
-        {chunks[0].map((question, i) => {
+        {cards[0].map((question, i) => {
           return (
             <Flippy
+              className="card"
               key={i}
               flipOnHover={false} // default false
               flipOnClick={true} // default false
-              flipDirection="horizontal" // horizontal or vertical
-              // if you pass isFlipped prop component will be controlled component.
-              // and other props, which will go to div
-              style={{
-                color: 'white',
-                cursor: 'pointer',
-                margin: '0 10px 10px 0',
-                height: '200px', 
-                width: '200px', 
-              }} /// these are optional style, it is not necessary
+              flipDirection="horizontal"
             >
               <FrontSide 
                 style={{
@@ -56,6 +66,9 @@ function App() {
           })
         }
       </div>
+      <footer>
+        Made with <span style={{ color: "#e25555" }}>&#9829;</span> by <a href="http://www.mcarlucci.com" target="_blank" rel="noreferrer">Matt Carlucci</a>
+      </footer>
     </div>
   );
 }
